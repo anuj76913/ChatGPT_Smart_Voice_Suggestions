@@ -1,0 +1,691 @@
+================================================================================
+PROBLEM STATEMENT & FULL PROJECT CONTEXT
+ChatGPT Voice Activation for Bharat Learners -- "Smart Voice Suggestions"
+================================================================================
+
+Sources consolidated in this file:
+  [M1]  Milestone 1.pdf  -- "India is Primed for Voice" (3 slides: market analysis,
+        UX audit + competitor lessons, why the outcome matters + metric tree)
+  [M2]  Milestone 2.pdf  -- "Picking the segment to win in India" (3 slides:
+        segmentation + sizing, survey validation, problem framing canvas)
+  [PRD] PRD: Smart Voice Suggestions -- ChatGPT Voice Activation for Bharat
+        Learners (11 pages, dated Nov 7, 2026, author: Anuj Gupta)
+
+The project moves from market opportunity (M1) to segment choice and problem
+validation (M2) to a buildable, testable product spec (PRD).
+
+
+--------------------------------------------------------------------------------
+0. ONE-PARAGRAPH PROBLEM STATEMENT
+--------------------------------------------------------------------------------
+Bharat Learners are students aged 18-24 in Tier-2/3 Indian cities who mostly
+use regional languages; about 7M of them use ChatGPT weekly. Most know ChatGPT
+Voice exists (~80%) and have tried it (~85%), but only ~19-20% use it often.
+Demand and awareness are not what holds them back. Nothing in their study flow
+tells them WHEN voice beats typing, so they fall back on typing (~70% "prefer
+typing"). The voice entry point is small and gives no reason to use it, and
+users have doubts about accents and privacy. As a result, ChatGPT fails to turn
+the voice habit these users already have (WhatsApp voice notes, YouTube voice
+search) into a study habit. The proposed solution, Smart Voice Suggestions,
+spots voice-friendly learning tasks (mock interviews, spoken English practice,
+viva/oral revision, pronunciation) and offers a one-tap, task-preset voice
+session in context, below the normal text answer. The goal is to grow Weekly
+Active Voice Learners (WAVL) and D7 voice retention without hurting text-chat
+quality.
+
+CORE INSIGHT: Voice has a retention/activation problem, not an awareness
+problem. "Demand exists. Activation is broken." "Availability != habit adoption."
+
+
+================================================================================
+PART A -- MILESTONE 1: "INDIA IS PRIMED FOR VOICE"
+(A market analysis of voice adoption opportunity)
+================================================================================
+
+A1. MARKET OPPORTUNITY
+----------------------
+Mobile-First
+  - 500M+ smartphone users; fastest growing market
+  - Mobile is the primary internet device for the majority
+  - Small screens make typing friction-heavy
+  - Voice reduces interaction friction by 60%+
+
+Multilingual Reality
+  - 22 official languages, hundreds of dialects
+  - Regional language typing is 3x slower than English
+  - Keyboard layouts are complex for non-Latin scripts
+  - Users are 2x more likely to speak than type in regional languages
+
+A2. EXISTING VOICE BEHAVIOR IN INDIA
+------------------------------------
+  - WhatsApp: voice notes are mainstream communication -- 100M+ voice
+    messages daily
+  - YouTube: voice search helps discovery -- 30% of searches are voice-based
+    in India
+  - Google Assistant: utility tasks are normalized -- weather, alarms,
+    directions, reminders
+  - Alexa: conversational interactions are trusted -- smart home adoption is
+    growing 40% YoY
+
+Is India ready for voice?  YES -- India is a strong voice market. Users already
+use voice for communication, search and utility tasks. The opportunity for
+ChatGPT is to reduce friction through better discoverability, trust and support
+for Indian-language use cases.
+
+A3. WHY VOICE ADOPTION IS LOW ON CHATGPT (UX gaps + competitor lessons)
+-----------------------------------------------------------------------
+ChatGPT Voice UX Audit -- four gaps:
+  1. Discoverability        -- voice isn't strongly surfaced
+  2. No contextual nudges   -- missing "Try voice" prompts
+  3. Trust & uncertainty    -- recording concerns, accent and language doubts
+  4. Weak onboarding        -- no clear value explanation
+
+Visual evidence: ChatGPT mobile input bar. The voice (mic) icon is small, sits
+among the other icons (+, Search, Reason, voice-mode button) and is "easy to
+miss". ChatGPT's voice entry is visually subtle.
+
+What competitors do better:
+  Product           | UX Pattern                   | PM Lesson
+  ------------------+------------------------------+--------------------
+  WhatsApp          | One-tap voice note           | Ultra-low friction
+  Google Assistant  | Voice-first default          | Discoverability
+  YouTube           | Prominent voice search icon  | Contextual utility
+  Alexa             | Conversational feedback      | Trust + clarity
+
+Competitors make voice visible, simple and trustworthy. ChatGPT treats it as
+optional.
+
+Key product insights:
+  - Demand exists. Activation is broken.
+  - There is no compelling "why voice?" trigger.
+  - Availability != habit adoption.
+
+A4. WHY THIS PRODUCT OUTCOME MATTERS
+------------------------------------
+  - Engagement: more voice usage drives higher session frequency and
+    time-on-app
+  - Retention: voice-first users show stronger habit formation and lower churn
+  - Differentiation: voice becomes a competitive moat in India's mobile-first
+    market
+
+"Voice is not a feature -- it's a market entry strategy for India."
+
+A5. METRIC TREE (from M1)
+-------------------------
+Goal: Increase ChatGPT Voice Usage (North Star goal)
+
+  Voice Usage = Active Users  x  Voice Adoption Rate  x  Voice Usage Frequency
+
+  Active Users (people who can potentially use voice)
+    = New Users (first-time) + Returning Users (previously active)
+        New Users       = New Installs (India) + Install-to-Signup Rate
+        Returning Users = Reactivated Users + Existing Active Users
+
+  Voice Adoption Rate (% of active users who try voice)
+    = Discovery (reach) x Activation (success)
+        Discovery  -> Voice Icon Visibility (% users exposed)
+        Activation -> First Voice Completion (completion rate)
+
+  Voice Usage Frequency (how often adopters use voice)
+    = Sessions/User (voice sessions per active user)
+      x Queries/Session (voice queries per session)
+        Sessions/User   -> Days Active (voice days per user) x Sessions per
+                           Active Day
+        Queries/Session -> Queries per Session x Multi-turn Depth
+                           (follow-up rate)
+
+  NORTH STAR METRIC (M1): Weekly Active Voice Users (India). It measures real
+  adoption and repeat usage over time.
+  (The PRD narrows this to Weekly Active Voice Learners, WAVL. See Part C.)
+
+
+================================================================================
+PART B -- MILESTONE 2: "PICKING THE SEGMENT TO WIN IN INDIA"
+================================================================================
+
+B1. CANDIDATE SEGMENTS
+(Lens framework from M1: WHO -> HOW -> WHY -> WHAT -> ENGAGED)
+---------------------------------------------------------------
+  S1 Bharat Learners (CHOSEN)
+       18-24, regional-language first.
+       Largest cohort; they speak faster than they type.
+  S2 Urban Professionals
+       Metros, English-fluent, premium devices.
+       Already activated; voice is only a convenience.
+  S3 Gig & SMB Operators
+       Shop owners, freelancers, delivery agents.
+       Hands busy; voice for replies and listings.
+  S4 First-Timers
+       Just installed, low feature awareness.
+       Onboarding moment; high leverage.
+  S5 Power Users
+       Daily multi-modal use, Plus subscribers.
+       Already use voice; low incremental impact.
+
+B2. WHY S1 WINS
+---------------
+  Impact = Size x Difficulty x Probability
+  - Size: HIGH. 690M smartphones; Bharat is the next 100M users.
+  - Difficulty: MEDIUM. Voice removes typing friction, but accent, trust and
+    privacy gaps remain.
+  - Probability: HIGH. 30% of Google searches in India are already by voice.
+  "Voice behaviour exists. ChatGPT activation is broken."
+
+B3. SIZING (top-down funnel)
+----------------------------
+  India smartphone users                          690M  (total base)
+    -> ~16% are learners 18-24 in Tier-2/3        ~110M
+    -> 20% of those are vernacular-first          ~22M
+    -> ~30% install ChatGPT and use it weekly     ~7M   (PRD chart: 6.6M)
+  => S1 Bharat Learners, weekly active ~= 7M (starting segment)
+  => ~22M vernacular-first learners = room to grow once voice becomes a habit
+  The voice habit already exists: YouTube voice search is widely used by
+  Indian learners.
+
+B4. VALIDATION -- SURVEY + INTERVIEWS (M2: n = 20)
+--------------------------------------------------
+HYPOTHESIS: Bharat Learners under-use ChatGPT voice because of weak
+discoverability, low trust in accent/privacy, and missing "why voice"
+triggers -- not because of lack of demand.
+
+Funnel (the "ACTIVATION CLIFF"):
+  - 80% aware of voice mode      (Q5: 16 of 20)
+  - 85% tried at least once      (Q6: 17 of 20)
+  - 4/20 (20%) use voice often   (Q6: "frequently" responses)
+  Note: more people reported trying it (85%) than being aware of it (80%).
+  This is how the survey answers came out.
+
+Why they avoid voice -- top blockers (multi-select, n=20):
+  Prefer typing       14 (70%)
+  Awkward aloud        5 (25%)
+  Voice feels slow     4 (20%)
+  Did not know         3 (15%)
+  Privacy              3 (15%)
+  Accent               2 (10%)
+
+Where voice would win -- use cases (multi-select, n=20):
+  Hands-free          13 (65%)
+  Mock interviews     11 (55%)
+  English practice    11 (55%)
+  Quick doubts         8 (40%)
+  Regional queries     2 (10%)
+
+What we heard (verbatim, Q11):
+  DISCOVERABILITY: "The voice feature is not very inviting -- I only tried it
+                    when I had to test usability." -- R13
+  AWKWARDNESS:     "Not getting personal space -- voice usage feels
+                    uncomfortable." -- R7
+  FRICTION:        "Couldn't find the setting to change voice speed and
+                    accent." -- R16
+
+VERDICT: Demand confirmed; activation broken.
+
+B5. PROBLEM FRAMING CANVAS -- ChatGPT Voice for Bharat Learners
+---------------------------------------------------------------
+CORE INSIGHT: Voice has a retention problem, not an awareness problem.
+
+- What is the true problem?
+  Bharat Learners know ChatGPT voice exists but don't use it for study tasks.
+  Nothing in context makes voice feel like the right tool for the moment.
+
+- Who are the customers facing the problem?
+  Bharat Learners (18-24, Tier-2/3, regional-language first) who actively use
+  ChatGPT but default to typing even though they know about voice.
+
+- How do we know it is a real problem?
+  Survey (n=20): 80% aware, 85% tried, only 4/20 use voice often; 70% prefer
+  typing. Verbatim: "The voice feature is not very inviting -- I only tried it
+  when I had to test usability."
+
+- What is the value generated by solving it?
+  For target customers: faster, hands-free study help in their own language;
+    less friction to learn, practise English and solve doubts without typing.
+  For the business: activates the next 100M Bharat users for ChatGPT; voice
+    becomes a defensible India moat against Gemini's voice-first lead.
+
+- Why solve it now?
+  Users already use voice elsewhere (YouTube, WhatsApp), but ChatGPT is failing
+  to turn that habit into study behaviour. The window to build a voice habit
+  before competitors lock it in is narrowing.
+
+
+================================================================================
+PART C -- PRD: SMART VOICE SUGGESTIONS
+(ChatGPT Voice Activation for Bharat Learners; Nov 7, 2026; Anuj Gupta)
+================================================================================
+
+C1. OVERVIEW
+------------
+Bharat Learners already know ChatGPT Voice exists and most have tried it, but
+only 19% use it often. They type because nothing tells them when voice beats
+typing. Smart Voice Suggestions spots learning tasks where speaking works
+better (interview prep, spoken English practice, viva prep) and offers a
+one-tap voice session in context. Success means more Weekly Active Voice
+Learners and better D7 voice retention, with text chat quality unharmed.
+
+  Field          | Detail
+  ---------------+-------------------------------------------------------------
+  Product        | ChatGPT mobile app (Android first, then iOS), India
+  Feature        | Smart Voice Suggestions: in-chat, context-aware prompts to
+                 | switch to Voice Mode
+  Target segment | Bharat Learners: students aged 18-24 in Tier-2/3 cities who
+                 | mostly use regional languages (~7M weekly active users)
+  Stage          | Discovery done. MVP ready to build and A/B test.
+  Stakeholders   | Product, Design, Applied ML (intent detection), Voice
+                 | platform, Data science, Trust & Safety, Localization, India
+                 | growth marketing
+  Prototype      | ask-listen-speak.lovable.app
+
+C2. PROBLEM STATEMENT (PRD wording)
+-----------------------------------
+Bharat Learners know ChatGPT Voice exists and have tried it, but they don't
+make it a habit. Nothing in their study flow tells them when voice works
+better than typing.
+
+Among surveyed learners (n=21), 81% knew about Voice Mode and 86% had tried
+it, yet only 19% used it often. Users don't lack demand or awareness. They
+stall between trying voice and making it a habit.
+
+WHY NOW: India has ~690M smartphone users. Typing in regional scripts is ~3x
+slower than typing in English. Voice is already mainstream: WhatsApp carries
+100M+ voice notes a day, and ~30% of searches in India are by voice.
+WhatsApp, YouTube and Google Assistant all put voice one tap away. In ChatGPT
+the voice button is small and nothing explains why to use it. If ChatGPT
+doesn't build this habit now, Gemini, which already leads with voice, may
+build it first.
+
+HYPOTHESIS: Bharat Learners under-use ChatGPT Voice for three reasons:
+  (1) there is no prompt in context,
+  (2) they are unsure how it handles accents and privacy, and
+  (3) there is no clear reason to choose voice over typing.
+Lack of demand is not the reason. If we offer voice at the right moment in a
+learning task, more of them will start a voice session and come back to it.
+
+Survey chart (PRD; Milestone 1 user survey, n=21 Bharat Learners,
+multi-select) -- "Habit, not awareness: most learners simply prefer typing":
+  Prefer typing            15 (71%)
+  Awkward speaking aloud    6 (29%)
+  Voice feels slow          4 (19%)
+  Privacy concerns          3 (14%)
+  Accent not understood     2 (10%)
+
+Interpretation: preferring to type is a habit problem. A well-timed prompt can
+address it, and no speech-model change is needed. Accent and privacy are real
+concerns but affect fewer people. On the demand side, users most wanted voice
+for hands-free help (65%), mock interviews (55%) and English practice (55%).
+
+What we heard: same three quotes as M2 (R13 discoverability, R7 awkwardness,
+R16 friction).
+
+Research method: an online survey plus short interviews with students aged
+18-24 from Tier-2/3 cities who use ChatGPT. This was early validation, not a
+statistically significant study. The A/B test in this PRD is how it gets
+confirmed.
+
+C3. GOALS, NON-GOALS AND SUCCESS METRICS
+----------------------------------------
+Main goal: turn one-time voice trials into a weekly study habit for Bharat
+Learners.
+
+Goals:
+  1. User goal: learners can tell when voice is the better tool for a study
+     task, and can start it in one tap without losing context.
+  2. Business goal: grow Weekly Active Voice Learners (WAVL) and improve
+     retention in the Bharat Learner segment, so voice becomes something
+     competitors can't easily copy in India.
+  3. Learning goal: test the hypothesis that weak prompting, not weak demand,
+     keeps voice usage low.
+
+Non-goals (out of scope for this release):
+  - Improving speech or accent recognition
+  - New voice personalities or voices
+  - Translation features
+  - Changing the voice model, its pricing or paywall rules
+  - Other segments (urban professionals, gig workers, power users) and
+    non-learning use cases
+
+Success metrics (targets are hypotheses, to be adjusted after measuring
+baselines in a 2-week pre-period; targets are over 8 weeks vs control):
+
+  Metric                       | Type        | Definition                         | Target
+  -----------------------------+-------------+------------------------------------+-------------------
+  Weekly Active Voice Learners | NORTH STAR  | Bharat Learners with >=1 voice     | +25% relative
+  (WAVL)                       |             | session of >=30s on a learning     |
+                               |             | task in the week                   |
+  Voice start rate             | Activation  | Voice sessions started /           | >=15%
+                               |             | suggestions shown                  |
+  Voice sessions per user/week | Engagement  | Voice sessions / weekly active     | +20% relative
+                               |             | voice users in the segment         |
+  D7 voice retention           | Retention   | Share of first-time voice users    | +5 pp
+                               |             | who start another voice session    |
+                               |             | 1-7 days later                     |
+  D30 retention                | Retention   | App-level D30 retention for the    | No drop; aim +2 pp
+                               |             | segment                            |
+  Opt-out rate                 | Guardrail   | Users who turn suggestions off /   | <=5%
+                               |             | users shown one                    |
+  Text-chat satisfaction       | Guardrail   | Thumbs-down rate on responses that | No significant rise
+                               |             | show a suggestion                  |
+
+C4. TARGET USERS
+----------------
+S1 Bharat Learners was chosen because it scores high on size and probability
+of success and only medium on difficulty.
+
+  Segment                 | Who                                 | Why not first
+  ------------------------+-------------------------------------+----------------------------------
+  S1 Bharat Learners      | 18-24, Tier-2/3 cities, mostly      | CHOSEN: the largest group, and
+  (chosen)                | regional languages                  | they speak faster than they type
+  S2 Urban Professionals  | Metro, fluent English, premium      | Already active; voice is only a
+                          | phones                              | convenience
+  S3 Gig & SMB Operators  | Shop owners, freelancers, delivery  | Hands are busy but main tasks
+                          | agents                              | aren't learning; later phase
+  S4 First-Timers         | Just installed, know few features   | Important for onboarding but hard
+                          |                                     | to tell apart from S1 at start
+  S5 Power Users          | Daily multi-mode use, often Plus    | Already use voice; little extra
+                          |                                     | to gain
+
+Score = Size x Difficulty x Probability.
+  Size HIGH (Bharat = next 100M users); Difficulty MEDIUM (voice removes typing
+  effort, but accent/trust/privacy doubts remain); Probability HIGH (30% of
+  Google searches in India are already by voice).
+
+Sizing chart (PRD) -- "About 7M weekly Bharat Learners are the starting
+segment" (top-down, millions, India):
+  India smartphone users          690M
+    v 16% of stage above
+  Aged 18-24, Tier-2/3 cities     110M
+    v 20% of stage above
+  Regional-language first          22M
+    v 30% of stage above
+  Use ChatGPT weekly              6.6M  (rounded to ~7M in text)
+The ~7M weekly users are where we start; the ~22M regional-language-first
+learners are the room to grow once voice becomes a habit.
+
+PERSONA -- Rahul Kumar, 20
+  An engineering student in a Tier-2 city. Uses ChatGPT for assignments,
+  interview prep and English practice. Sends WhatsApp voice notes and searches
+  YouTube by voice every day. On ChatGPT he still types, because he can't tell
+  when voice would help more.
+
+JOBS TO BE DONE
+  - When I'm preparing for a placement interview, I want to practise answering
+    out loud, so I sound confident on the day.
+  - When I'm improving my spoken English, I want a patient partner who corrects
+    me, so I can practise without feeling embarrassed.
+  - When I'm revising for a viva or exam, I want to explain a concept and get
+    questions back, so I find my gaps quickly.
+
+CURRENT JOURNEY:
+  study task -> open ChatGPT -> type query -> read answer -> type follow-up ->
+  keep typing.  Voice never comes up at any step.
+
+C5. SOLUTION
+------------
+Build Smart Voice Suggestions: when a learner asks for help with a task where
+talking works better than typing, ChatGPT offers Voice Mode right in the chat.
+
+Options considered (RICE):
+  Option                    | Description                       | Reach  | Impact | Confidence | Effort | Priority
+  --------------------------+-----------------------------------+--------+--------+------------+--------+------------------------------
+  A. Smart Voice            | Offer Voice Mode during tasks     | High   | High   | High       | Low    | HIGHEST: build now
+     Suggestions            | such as interview prep, spoken    |        |        |            |        |
+                            | English practice and viva prep    |        |        |            |        |
+  B. Voice Preview Mode     | A 30-second guided voice demo     | Medium | Medium | Medium     | Low    | Medium: candidate for v2,
+                            | before a full session             |        |        |            |        | can sit on top of A
+  C. Voice Learning         | Structured 7-day voice challenges | Medium | Medium | Medium     | High   | Low: revisit once a habit
+     Challenges             | for speaking, interviews and      |        |        |            |        | loop is proven
+                            | concepts                          |        |        |            |        |
+
+Why option A: it targets the main research finding head-on: users don't know
+WHEN to use voice. It meets them inside the typed chat they already use and
+reuses the existing Voice Mode. It scored highest on RICE for the lowest
+effort, and it gives a clean exposure event for A/B testing.
+
+How it works:
+  1. DETECT: a lightweight classifier tags the learner's typed query as
+     voice-friendly: mock interview, speaking practice, viva or oral revision,
+     or pronunciation.
+  2. SUGGEST: under ChatGPT's normal text answer, a card appears: "Practice
+     with Voice: speak your answers out loud and get instant feedback on your
+     confidence and accuracy", with a [Try Voice Practice] button. The text
+     answer always comes first and is never blocked.
+  3. START IN CONTEXT: one tap opens Voice Mode already set for the task (e.g.
+     Interview Practice opens with its first question), so the user doesn't
+     repeat themselves.
+  4. CLOSE THE LOOP: when the session ends, a summary shows duration,
+     questions practised and progress toward a streak goal. It offers
+     [Practice Again] or [Back to Chat] and suggests a next voice activity.
+
+USER FLOW ("One tap turns a typed study task into a voice session"):
+  Types a query -> Gets text answer -> [Voice-friendly task?]
+     no  -> Continues typing
+     yes -> Suggestion card appears
+              dismissed           -> Continues typing
+              taps Try Voice Practice -> Voice session, task preset
+                 -> Speaks answers, gets feedback -> Session summary
+                 -> Practice again or next activity
+The text answer always comes first. Voice is offered, never forced. If the
+user dismisses the card or the task isn't voice-friendly, they keep typing as
+they do today.
+
+C6. REQUIREMENTS
+----------------
+The MVP covers every P0 item. P1 items ship in the same release if capacity
+allows, or in the next one.
+
+Functional requirements:
+  FR-1  [P0] Detect voice-friendly learning intent in typed queries: mock
+        interview, spoken English, viva or oral revision, pronunciation.
+        AC: Precision >=85% on a labelled set of >=1,000 Indian learner
+        queries (English and Hinglish). Text replies get no slower in any way
+        users notice.
+  FR-2  [P0] Show a Smart Voice Suggestion card below the text answer.
+        AC: Card has a task-specific title, one line on why voice helps, and a
+        Try Voice Practice button. The text answer always renders first.
+  FR-3  [P0] Open Voice Mode with the task already set.
+        AC: One tap opens a session labelled with the task (e.g. "Interview
+        Practice"). The assistant speaks first with a relevant prompt, and the
+        chat context carries over.
+  FR-4  [P0] Let users dismiss and turn off suggestions.
+        AC: Every card has a dismiss (x) and a "Don't suggest voice" option.
+        Turning it off works at once and can be reversed in Settings.
+  FR-5  [P0] Limit how often suggestions appear.
+        AC: At most 1 suggestion per conversation and 3 per user per week.
+        After 3 dismissals in a row, suggestions pause for 14 days.
+  FR-6  [P0] Reassure users on privacy before the first session.
+        AC: On first use, a short line covers how voice data is handled, with
+        a link to the policy. Uses existing policy only, with no new data
+        collection.
+  FR-7  [P0] Handle a denied mic permission smoothly.
+        AC: If the mic is blocked, explain why it's needed, offer a link to
+        settings, and return to text with no dead end.
+  FR-8  [P1] Show a session summary screen.
+        AC: Shows duration, number of questions practised, one improvement tip
+        and streak progress, with Practice Again and Back to Chat.
+  FR-9  [P1] Suggest a next voice activity.
+        AC: The summary suggests one related activity (e.g. "Practise HR
+        questions next").
+  FR-10 [P1] Easy-to-find speed and accent controls.
+        AC: Speed and accent controls can be reached in one tap from the
+        active voice session screen. (Addresses R16's friction quote.)
+  FR-11 [P1] Localized suggestion copy.
+        AC: Card copy available in English and Hindi first, then the top 3
+        regional languages by segment usage.
+
+Non-functional requirements:
+  - Performance and reliability: intent detection adds no wait to text
+    replies. Voice sessions start in <2s on a mid-range Android phone over 4G.
+    If the classifier or voice service fails, the card is hidden and text chat
+    carries on.
+  - Privacy and accessibility: no new audio or transcript storage beyond the
+    current Voice Mode policy; India's DPDP Act rules on notice and consent
+    are followed. The card works with TalkBack and VoiceOver and meets
+    WCAG AA.
+  - Control: a server-side kill switch can turn off suggestions by region,
+    language or cohort without an app release.
+
+C7. EDGE CASES
+--------------
+  Scenario                                   | Expected behaviour
+  -------------------------------------------+----------------------------------------------
+  Query is ambiguous (e.g. "explain          | Show the card only above the confidence
+  interview questions for testers")          | threshold; otherwise show nothing.
+  User is in a noisy or shared space         | Card subtext suggests headphones. The voice
+                                             | session shows a "noisy room" hint if input
+                                             | quality drops.
+  User switches to Hindi or Hinglish         | Session continues in the detected language.
+  mid-session                                | The summary is written in the language the
+                                             | user spoke most.
+  Network drops during a voice session       | Save the transcript so far and offer to
+                                             | continue in text without losing context.
+
+C8. EXPERIMENT PLAN
+-------------------
+Randomized A/B test for 4 weeks. Ship only if voice start rate AND D7 voice
+retention both improve and no guardrail is breached.
+  - Who's in it: India users aged 18-24 in Tier-2/3 regions who send at least
+    one eligible learning query, split 50/50 at user level into Control (no
+    card) and Treatment.
+  - Primary metric: voice start rate among ELIGIBLE users in both arms (so
+    control isn't undercounted). Secondary: sessions per user, D7 voice
+    retention, WAVL.
+  - Length and size: 4 weeks, so D7 has time to mature and exam weeks and
+    weekends even out. Sized to detect a 2 pp lift at 95% confidence and 80%
+    power.
+  - Instrumentation: suggestion eligible, shown, tapped, dismissed; voice
+    session started, completed. Each event is tagged with intent type,
+    language and arm.
+  - Decision rules:
+      SHIP    if primary metrics improve and guardrails hold.
+      ITERATE if taps rise but D7 stays flat (fix the in-session experience).
+      KILL    if opt-outs exceed 5% or text satisfaction drops.
+
+C9. LAUNCH PLAN (four phases; each needs the previous phase's gate to pass)
+---------------------------------------------------------------------------
+  1. Internal dogfood (2 weeks): India staff + a student beta panel.
+     Gate: classifier precision >=85%, no P0 bugs, privacy copy approved by
+     Legal and Trust & Safety.
+  2. A/B test at 10% of eligible users (4 weeks).
+     Gate: primary metrics clear the targets and guardrails hold.
+  3. Ramp to 50%, then 100% in India; add Hindi, then regional-language card
+     copy.
+     Gate: results hold at scale, and voice infrastructure cost per WAVL stays
+     within budget.
+  4. v2 bets: add Voice Preview Mode on top, then test Voice Learning
+     Challenges with users who have built a habit.
+
+C10. RISKS AND MITIGATIONS
+--------------------------
+  Risk                                       | Likelihood | Mitigation
+  -------------------------------------------+------------+--------------------------------------
+  Suggestions feel pushy to the 71% who      | High       | Frequency limits, easy dismiss and
+  prefer typing                              |            | opt-out, opt-out guardrail, contextual
+                                             |            | triggers only
+  Speaking aloud feels awkward in hostels    | Medium     | Copy that suggests headphones;
+  and libraries                              |            | whisper/low-volume mode is a v2
+                                             |            | candidate
+  Accent or Hinglish recognition fails and   | Medium     | Start with tasks where recognition
+  trust drops after the first try            |            | already performs well; flag poor
+                                             |            | sessions; share data with speech team
+  More voice use raises infrastructure cost  | Medium     | Track cost per WAVL, cap session
+                                             |            | length in the MVP, use the kill switch
+
+C11. DECISIONS TAKEN
+--------------------
+  - Prompt before model: v1 changes WHEN voice is offered, not how speech
+    recognition works. Accent and recognition work stays with the speech team.
+  - Suggestions, not a default switch: text stays the default and voice is
+    always opt-in, so we don't push away the 71% who prefer typing.
+  - English and Hinglish first: regional-language card copy follows in the
+    ramp phase, once the classifier proves reliable.
+
+
+================================================================================
+PART D -- CROSS-DOCUMENT ANALYSIS
+================================================================================
+
+D1. HOW THE THREE DOCUMENTS CONNECT
+-----------------------------------
+  M1 (Why voice, why India)  -> India is voice-ready; ChatGPT's voice UX has
+                                four gaps (discoverability, no contextual
+                                nudges, trust, weak onboarding); North Star =
+                                Weekly Active Voice Users (India).
+  M2 (Who + is it real)      -> Picks S1 Bharat Learners (~7M WAU); survey
+                                shows an "activation cliff" (aware 80% ->
+                                tried 85% -> frequent 20%); framing canvas
+                                says the problem is retention/activation, not
+                                awareness.
+  PRD (What we build + how   -> Smart Voice Suggestions: in-context, one-tap,
+       we prove it)             task-preset voice sessions. NSM narrowed to
+                                WAVL; validated with a 4-week A/B test and a
+                                gated rollout.
+
+How the M1 UX gaps map to PRD features:
+  Discoverability gap        -> FR-1 intent detection + FR-2 in-chat card
+  No contextual nudges       -> FR-1/FR-2 (card appears only on voice-friendly
+                                tasks); FR-5 frequency limits
+  Trust & uncertainty        -> FR-6 privacy reassurance, FR-7 mic-permission
+                                handling, FR-10 speed/accent controls,
+                                headphone/noisy-room edge cases
+  Weak onboarding / no       -> card copy explaining why voice helps (FR-2),
+  "why voice"                   task preset (FR-3), session summary + next
+                                activity (FR-8, FR-9) to close the habit loop
+How the M1 competitor lessons are applied:
+  WhatsApp one-tap           -> one tap from card to a preset voice session
+  YouTube contextual utility -> suggestion appears only in relevant contexts
+  Alexa conversational       -> assistant speaks first; summary with feedback
+  feedback / trust
+  Google voice-first default -> deliberately NOT copied: text stays default;
+                                voice is opt-in (Decision: "Suggestions, not
+                                a default switch")
+
+How the M2 survey findings map to the PRD:
+  "Prefer typing" (70-71%)   -> habit problem -> well-timed contextual prompt,
+                                not a model change; anti-pushiness guardrails
+  "Awkward aloud" (25-29%)   -> headphone copy; whisper mode as a v2 candidate
+  Privacy (14-15%)           -> FR-6 using existing policy; DPDP compliance
+  Accent (10%)               -> out of scope for v1 (speech team); FR-10
+                                controls; start with tasks where recognition
+                                already works well
+  Use cases: mock interviews, English practice (55% each) -> classifier intent
+                                classes; hands-free (65%) -> overall value
+
+D2. NUMBERS THAT DIFFER BETWEEN DOCUMENTS (keep in mind when reusing)
+---------------------------------------------------------------------
+  - Smartphone base: M1 says "500M+"; M2 and PRD use 690M.
+  - Survey sample: M2 n=20 (80% aware, 85% tried, 4/20 = 20% frequent);
+    PRD n=21 (81% aware, 86% tried, 19% frequent).
+  - Blockers: M2 (n=20) prefer typing 14 (70%), awkward 5 (25%), slow 4 (20%),
+    did not know 3 (15%), privacy 3 (15%), accent 2 (10%).
+    PRD (n=21) prefer typing 15 (71%), awkward 6 (29%), slow 4 (19%),
+    privacy 3 (14%), accent 2 (10%); "did not know" is not in the PRD chart.
+  - Segment size: M2 says ~7M; PRD chart says 6.6M (text rounds to ~7M).
+  - 30% voice searches: M1 attributes it to YouTube ("30% of searches are
+    voice-based in India"); M2/PRD say "30% of Google searches in India".
+  - North Star: M1 = Weekly Active Voice Users (India); PRD = Weekly Active
+    Voice Learners (WAVL, >=1 voice session of >=30s on a learning task).
+  - The PRD calls the survey the "Milestone 1 user survey", but the survey
+    results appear in the Milestone 2 deck.
+
+D3. KEY TAKEAWAYS
+-----------------
+  1. India is voice-ready (WhatsApp, YouTube, Assistant habits); ChatGPT's
+     voice is simply under-surfaced and lacks a "why now" trigger.
+  2. The target is Bharat Learners (18-24, Tier-2/3, vernacular-first): ~7M
+     weekly ChatGPT users today, ~22M headroom.
+  3. The bottleneck is between trial and habit (an activation/retention
+     cliff), not awareness or demand.
+  4. The fix is behavioural/UX (when to offer voice), not model-level (how
+     speech is recognised).
+  5. Smart Voice Suggestions = detect voice-friendly study intent -> suggest
+     below the text answer -> one-tap task-preset voice session -> summary +
+     streak + next activity.
+  6. Success = WAVL +25%, voice start rate >=15%, D7 voice retention +5 pp,
+     with guardrails: opt-out <=5% and no rise in text thumbs-down.
+  7. Safeguards against being pushy: max 1 per conversation and 3 per week,
+     14-day pause after 3 dismissals in a row, easy opt-out, kill switch,
+     text always first.
+
+================================================================================
+END OF FILE
+================================================================================

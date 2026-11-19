@@ -1,0 +1,14 @@
+{
+  "note": "Per-intent card thresholds. Written by `npm run eval:classifier -- --write-thresholds` from the threshold sweep (implementation-plan P2.6). Runtime overrides via /v1/admin/config still win.",
+  "tunedFor": "openai/gpt-oss-20b@clf-v2",
+  "thresholds": {
+    "mock_interview": 0.5,
+    "spoken_english": 0.5,
+    "viva_revision": 0.96,
+    "pronunciation": 0.5
+  },
+  "tunedOn": "2026-11-16",
+  "tuningTarget": "per-intent precision ≥ 0.90 and no ambiguous-set cards",
+  "dataset": "data/intent-eval/seed.jsonl (200 rows)",
+  "flagged": []
+}

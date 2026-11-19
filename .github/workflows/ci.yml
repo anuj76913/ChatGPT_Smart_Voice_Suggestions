@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: svs
+          POSTGRES_PASSWORD: svs_ci_password
+          POSTGRES_DB: svs_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U svs -d svs_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      # Integration tests wipe and migrate this database; they never call the real Groq API (fake server).
+      TEST_DATABASE_URL: postgres://svs:svs_ci_password@localhost:5432/svs_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Typecheck
+        run: npm run typecheck
+      - name: Unit + integration tests
+        run: npm test
+      - name: Build
+        run: npm run build
+      - name: Validate labelled intent dataset
+        run: npm run dataset:validate
+      # FR-1 gate: precision ≥85% at current thresholds, no ambiguous cards, predictions not stale
+      # (any prompt/model/prefilter/dataset change must come with a fresh `npm run eval:classifier`).
+      - name: Classifier eval gate
+        run: npm run eval:check

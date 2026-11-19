@@ -1,0 +1,10 @@
+{
+  "_comment": "Phase 8 → 9 gate sign-offs (implementation-plan Phase 8, PRD launch gate). Fill each entry with who confirmed it and when (YYYY-MM-DD). npm run gate:phase9 reads this file. Never put secrets here.",
+  "legal_privacy_copy": { "approved_by": null, "date": null, "note": "Legal + Trust & Safety approve the first-use privacy line, mic explainer and research-consent wording (FR-6)" },
+  "groq_data_terms": { "approved_by": null, "date": null, "note": "Groq data-processing and retention terms (architecture §17 #13)" },
+  "transcript_retention": { "approved_by": null, "date": null, "note": "privacy.voiceTranscriptRetentionDays matches the Voice Mode policy (§17 #9)" },
+  "groq_capacity": { "approved_by": null, "date": null, "note": "Groq tier upgraded; analytics.groqLimits updated; npm run capacity:plan -- --scenario ab10 fits (BB-05)" },
+  "auth_or_private_network": { "approved_by": null, "date": null, "note": "Real sign-in, or the deployment is reachable only from the private network (BB-13)" },
+  "p0_bugs": { "open": null, "checked_by": null, "date": null, "note": "Number of open P0 bugs after dogfood triage (must be 0)" },
+  "analysis_plan_frozen": { "approved_by": null, "date": null, "note": "docs/phase8/analysis-plan.md frozen with rollout, duration and MDE from the baseline report (P8.5)" }
+}

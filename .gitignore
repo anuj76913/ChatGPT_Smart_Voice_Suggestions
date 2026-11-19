@@ -1,0 +1,24 @@
+node_modules/
+dist/
+coverage/
+*.log
+.vite/
+.DS_Store
+Thumbs.db
+
+# Secrets: only the template is committed
+.env
+.env.*
+!.env.example
+
+# Project-local PostgreSQL cluster (npm run db:local:init)
+.pgdata/
+
+# Labeller working files (double-labelling exports)
+data/intent-eval/labellers/
+
+# Phase 8: real dogfood queries (personal data). Never commit; keep in restricted storage.
+data/intent-eval/private/
+
+# Course documents (Milestone reports, PRD): kept local, not published
+/*.pdf

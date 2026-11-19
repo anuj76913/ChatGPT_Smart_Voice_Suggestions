@@ -1,0 +1,41 @@
+name: Classifier eval (live Groq)
+
+# Re-runs the classifier against the labelled dataset on Groq and uploads the predictions and report.
+# Manual, because it spends Groq tokens (~550 per query) and the free tier allows 8k tokens/minute.
+# Needs the repository secret GROQ_API_KEY (an eval-only key, not production's).
+on:
+  workflow_dispatch:
+    inputs:
+      write_thresholds:
+        description: Re-tune per-intent thresholds (P2.6)
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - name: Run eval
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        run: npm run eval:classifier -- ${{ inputs.write_thresholds && '--write-thresholds' || '' }}
+      - name: Gate
+        run: npm run eval:check
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: classifier-eval
+          path: |
+            data/intent-eval/results/
+            docs/phase2/eval-report.md
+            packages/shared/src/classifier-thresholds.json
