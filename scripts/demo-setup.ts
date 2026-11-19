@@ -12,7 +12,7 @@
  * See docs/DEMO.md for the click-through script.
  */
 import { config as loadDotenv } from 'dotenv';
-import type { DeepPartial, SvsConfig } from '@svs/shared';
+import { DEMO_CONFIG } from '@svs/shared';
 import { ConfigService } from '../apps/server/src/config/service';
 import { createDb } from '../apps/server/src/db';
 import { runMigrations } from '../apps/server/src/migrate';
@@ -24,20 +24,7 @@ if (!url) {
   process.exit(1);
 }
 
-const DEMO: DeepPartial<SvsConfig> = {
-  enabled: true,
-  rolloutPercent: 100,
-  killSwitch: [],
-  dogfoodCohorts: [],
-  experiment: { id: 'svs_demo', treatmentShare: 1 },
-  cap: { perConversation: 1, perRollingWeek: 20, rollingWindowHours: 168 }, // 20 = the validated maximum
-  pause: { consecutiveDismissals: 20, days: 1 },
-  classifier: { languages: ['en', 'hinglish', 'hi', 'bn', 'mr', 'te'] },
-  v2: {
-    previewMode: { enabled: true },
-    quietMode: { enabled: true },
-  },
-};
+const DEMO = DEMO_CONFIG; // packages/shared/src/config.ts (also used by APPLY_DEMO_CONFIG on a deployed server)
 
 const db = createDb(url)!;
 try {

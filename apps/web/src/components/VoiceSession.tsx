@@ -228,8 +228,11 @@ export function VoiceSession({
   const connect = useCallback(
     (s: CreateVoiceSessionResponse, attempt = 0): void => {
       const proto = location.protocol === 'https:' ? 'wss' : 'ws';
+      // Split hosting (web on Vercel, API on Railway): Vercel can't proxy WebSockets, so the stream goes straight to
+      // the API host, e.g. VITE_VOICE_WS_URL=wss://your-api.up.railway.app (server: VOICE_WS_TOKEN_ONLY=true).
+      const wsBase = ((import.meta.env.VITE_VOICE_WS_URL as string | undefined) ?? `${proto}://${location.host}`).replace(/\/$/, '');
       const last = lastTurnId.current ? `&last_turn_id=${lastTurnId.current}` : '';
-      const sock = new WebSocket(`${proto}://${location.host}${s.stream.path}?token=${encodeURIComponent(s.stream.token)}${last}`);
+      const sock = new WebSocket(`${wsBase}${s.stream.path}?token=${encodeURIComponent(s.stream.token)}${last}`);
       sock.binaryType = 'arraybuffer';
       ws.current = sock;
       sock.onmessage = (e) => onServer(JSON.parse(String(e.data)) as VoiceServerMessage);

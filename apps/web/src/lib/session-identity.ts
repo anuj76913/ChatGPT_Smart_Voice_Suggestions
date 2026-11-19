@@ -4,8 +4,32 @@
  * which case the handle lasts for this page load only.
  */
 export const ADMIN_ROUTE = '#/admin/analytics';
-/** Must be listed in the server's ADMIN_USERS (.env). */
-export const ADMIN_HANDLE = (import.meta.env.VITE_ADMIN_HANDLE as string | undefined) ?? 'admin';
+const ADMIN_KEY = 'svs_admin_handle';
+
+/**
+ * The admin handle (must be listed in the server's ADMIN_USERS), or null when this browser has none.
+ * - Local development: VITE_ADMIN_HANDLE or "admin", so #/admin/analytics just works.
+ * - A deployed (public) build never contains it: open the private link /?admin=<handle>#/admin/analytics once;
+ *   the handle is kept for this browser tab and removed from the address bar. Without it, the dashboard URL
+ *   stays a normal learner chat, so strangers can't become admin and change the live config.
+ */
+export function adminHandle(): string | null {
+  try {
+    const url = new URL(location.href);
+    const fromLink = url.searchParams.get('admin');
+    if (fromLink && /^[a-z0-9._-]{2,32}$/i.test(fromLink)) {
+      sessionStorage.setItem(ADMIN_KEY, fromLink);
+      url.searchParams.delete('admin');
+      history.replaceState(null, '', url.pathname + url.search + url.hash);
+      return fromLink;
+    }
+    const saved = sessionStorage.getItem(ADMIN_KEY);
+    if (saved) return saved;
+  } catch {
+    /* storage blocked: fall through */
+  }
+  return import.meta.env.DEV ? ((import.meta.env.VITE_ADMIN_HANDLE as string | undefined) ?? 'admin') : null;
+}
 
 const KEY = 'svs_device_handle';
 const AUTO_ADMIN_KEY = 'svs_auto_admin';

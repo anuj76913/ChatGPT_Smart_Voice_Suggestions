@@ -22,7 +22,7 @@ export function registerSecurity(app: FastifyInstance, env: Env) {
     for (const m of [r.method].flat()) if (m !== 'HEAD') routes.push({ method: m, url: r.url });
   });
 
-  const allowed = new Set([new URL(env.WEB_ORIGIN).origin]);
+  const allowed = new Set(env.webOrigins);
   app.addHook('onRequest', async (req, reply) => {
     const isUpgrade = req.headers.upgrade?.toLowerCase() === 'websocket';
     if (!UNSAFE.has(req.method) && !isUpgrade) return;

@@ -14,16 +14,21 @@ export function signStreamToken(secret: string, sessionId: string, userId: strin
 }
 
 export function verifyStreamToken(secret: string, token: string | undefined, sessionId: string, userId: string, now = Date.now()): boolean {
-  if (!token) return false;
+  return streamTokenUser(secret, token, sessionId, now) === userId;
+}
+
+/** The user a valid, unexpired token for this session was issued to, or null (bad signature, other session, expired). */
+export function streamTokenUser(secret: string, token: string | undefined, sessionId: string, now = Date.now()): string | null {
+  if (!token) return null;
   const [payload, sig] = token.split('.');
-  if (!payload || !sig) return false;
+  if (!payload || !sig) return null;
   const expected = createHmac('sha256', secret).update(payload).digest();
   const given = Buffer.from(sig, 'base64url');
-  if (given.length !== expected.length || !timingSafeEqual(given, expected)) return false;
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) return null;
   try {
     const p = JSON.parse(Buffer.from(payload, 'base64url').toString()) as { s: string; u: string; e: number };
-    return p.s === sessionId && p.u === userId && p.e > now;
+    return p.s === sessionId && p.e > now && typeof p.u === 'string' ? p.u : null;
   } catch {
-    return false;
+    return null;
   }
 }

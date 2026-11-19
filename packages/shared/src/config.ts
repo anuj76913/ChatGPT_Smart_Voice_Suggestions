@@ -166,6 +166,26 @@ export type DeepPartial<T> = {
  * Defaults. PRD values are fixed requirements; values marked "proposed" come from
  * docs/decisions.md ADR-008 and can be overridden at runtime by the config service (S7).
  */
+/**
+ * Team-demo runtime overrides ("show everything"): applied by `npm run demo:setup` locally, or on first start of a
+ * deployed server with APPLY_DEMO_CONFIG=true. Suggestions on for everyone, cards in all six eval languages,
+ * relaxed caps so a presenter can repeat flows, and the in-scope v2 bets (voice preview, quiet mode).
+ */
+export const DEMO_CONFIG: DeepPartial<SvsConfig> = {
+  enabled: true,
+  rolloutPercent: 100,
+  killSwitch: [],
+  dogfoodCohorts: [],
+  experiment: { id: 'svs_demo', treatmentShare: 1 },
+  cap: { perConversation: 1, perRollingWeek: 20, rollingWindowHours: 168 }, // 20 = the validated maximum
+  pause: { consecutiveDismissals: 20, days: 1 },
+  classifier: { languages: ['en', 'hinglish', 'hi', 'bn', 'mr', 'te'] },
+  v2: {
+    previewMode: { enabled: true },
+    quietMode: { enabled: true },
+  },
+};
+
 export const DEFAULT_SVS_CONFIG: SvsConfig = {
   enabled: false,
   dogfoodCohorts: [],
@@ -197,9 +217,10 @@ export const DEFAULT_SVS_CONFIG: SvsConfig = {
     noisyTurns: 2, // proposed
     reconnectMs: 5000, // proposed
     contextTurns: 6, // proposed
-    // 2.5 s, not 1.2 s: interview and viva answers have thinking pauses, and 1.2 s cut learners off mid-answer
-    // (the coach then asked the next question). "Done speaking" still ends a turn at once.
-    endOfSpeechSilenceMs: 2500,
+    // 1.8 s: 1.2 s cut learners off mid-answer (thinking pauses), 2.5 s felt slow after every answer. Silence is
+    // measured against the learner's own speech level (web end-of-turn.ts), so room noise can't stretch it.
+    // "Done speaking" still ends a turn at once. Tunable live: npm run ops:config.
+    endOfSpeechSilenceMs: 1800,
     wavlMinSessionS: 30, // North Star definition (PRD)
     serverResumeWindowMs: 60000, // proposed
     maxTurnSeconds: 90, // proposed (edge-case IS-10)

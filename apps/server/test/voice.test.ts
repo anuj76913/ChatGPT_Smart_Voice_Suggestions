@@ -156,7 +156,7 @@ d('Phase 4 voice sessions (integration)', () => {
     const s = res.json() as CreateVoiceSessionResponse;
     expect(s).toMatchObject({ label: 'Interview Practice', preset_id: 'interview_practice', opening: { source: 'llm', language: 'en' }, settings: { speed: 'normal' } });
     expect(s.opening.text).toContain('tell me about yourself');
-    expect(s.limits).toMatchObject({ max_duration_s: 600, end_of_speech_silence_ms: 2500 });
+    expect(s.limits).toMatchObject({ max_duration_s: 600, end_of_speech_silence_ms: 1800 });
     const openingReq = fake.requests.find((r) => !r.body.stream && !r.path.includes('audio'))!;
     expect(JSON.stringify(openingReq.body.messages)).toContain('TCS Ninja');
     expect((await db.query('SELECT status, entry_point, opening_source FROM voice_sessions WHERE id = $1', [s.session_id])).rows[0]).toEqual({ status: 'active', entry_point: 'suggestion_card', opening_source: 'llm' });

@@ -111,7 +111,7 @@ export function buildApp(deps: AppDeps): FastifyInstance {
     registerEventRoutes(app, { db, config, limiter: new RateLimiter(deps.limits?.eventsPerMinute ?? 60, minute) });
     registerConfigRoutes(app, { config });
     registerClassifierRoutes(app, { classifier, config });
-    registerVoiceRoutes(app, { voice, summaries, secret: env.SESSION_SECRET, limiter: new RateLimiter(10, minute) });
+    registerVoiceRoutes(app, { voice, summaries, secret: env.SESSION_SECRET, limiter: new RateLimiter(10, minute), wsTokenOnly: env.voiceWsTokenOnly });
     registerAnalyticsRoutes(app, { db, config, alerts, limiter: new RateLimiter(30, minute) });
   });
 

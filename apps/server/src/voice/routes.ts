@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { ENTRY_POINTS, VOICE_INTENTS } from '@svs/shared';
 import type { RateLimiter } from '../rate-limit';
 import { VoiceError, type VoiceOrchestrator } from './orchestrator';
-import { verifyStreamToken } from './token';
+import { streamTokenUser, verifyStreamToken } from './token';
 
 const CreateBody = z
   .object({
@@ -29,7 +29,14 @@ const EndBody = z.object({ reason: z.enum(['user', 'idle']).optional() }).strict
  */
 export function registerVoiceRoutes(
   app: FastifyInstance,
-  deps: { voice: VoiceOrchestrator | null; summaries: VoiceSummaries | null; secret: string; limiter: RateLimiter },
+  deps: {
+    voice: VoiceOrchestrator | null;
+    summaries: VoiceSummaries | null;
+    secret: string;
+    limiter: RateLimiter;
+    /** Split hosting: the stream token alone identifies the user (env VOICE_WS_TOKEN_ONLY). */
+    wsTokenOnly?: boolean;
+  },
 ) {
   const unavailable = { error: 'voice_unavailable' };
 
@@ -85,14 +92,15 @@ export function registerVoiceRoutes(
     }
   });
 
-  app.get('/v1/voice/sessions/:id/stream', { websocket: true, preHandler: app.authenticate }, (socket, req) => {
+  app.get('/v1/voice/sessions/:id/stream', { websocket: true, ...(deps.wsTokenOnly ? {} : { preHandler: app.authenticate }) }, (socket, req) => {
     const p = IdParams.safeParse(req.params);
     const q = req.query as { token?: string; last_turn_id?: string };
-    const user = req.user!;
-    if (!deps.voice || !p.success || !verifyStreamToken(deps.secret, q.token, p.data.id, user.id) || !deps.voice.owns(p.data.id, user.id)) {
+    const userId = !p.success ? null : deps.wsTokenOnly ? streamTokenUser(deps.secret, q.token, p.data.id) : req.user!.id;
+    if (!deps.voice || !p.success || !userId || !verifyStreamToken(deps.secret, q.token, p.data.id, userId) || !deps.voice.owns(p.data.id, userId)) {
       socket.close(4401, 'unauthorized');
       return;
     }
+    const user = { id: userId };
     const sessionId = p.data.id;
     const voice = deps.voice;
     voice.attach(sessionId, user.id, socket, q.last_turn_id ?? null);

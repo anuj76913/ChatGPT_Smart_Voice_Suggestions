@@ -20,7 +20,14 @@ const EnvSchema = z
     DATABASE_URL: z.string().url().optional(),
     GROQ_API_KEY: z.string().min(1).optional(),
     GROQ_BASE_URL: z.string().url().default('https://api.groq.com/openai/v1'),
-    WEB_ORIGIN: z.string().url().default('http://localhost:5173'),
+    /**
+     * Web origin(s) allowed to make state-changing requests and open the voice WebSocket, comma-separated
+     * (e.g. the Vercel production URL plus a preview URL). Same-origin requests are always allowed.
+     */
+    WEB_ORIGIN: z
+      .string()
+      .default('http://localhost:5173')
+      .refine((v) => v.split(',').every((o) => z.string().url().safeParse(o.trim()).success), 'must be one or more comma-separated URLs'),
     LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
     /** Signs the session cookie. Required outside local/test. */
     SESSION_SECRET: z.string().min(32).optional(),
@@ -32,6 +39,15 @@ const EnvSchema = z
     CONFIG_RELOAD_MS: z.coerce.number().int().min(1000).max(60000).default(15000),
     /** Run pending SQL migrations on startup. Defaults on for local/test. */
     MIGRATE_ON_START: boolish,
+    /**
+     * Split hosting (web on Vercel, API on Railway): the browser opens the voice WebSocket straight to the API host,
+     * where it has no session cookie. When true, the short-lived signed stream token alone identifies the user
+     * (it is only issued to the signed-in owner of the session, is bound to it, and expires in 5 minutes).
+     * Off by default: same-origin deployments keep requiring cookie AND token.
+     */
+    VOICE_WS_TOKEN_ONLY: boolish,
+    /** Apply the team-demo config (packages/shared DEMO_CONFIG) on start when no overrides exist yet. */
+    APPLY_DEMO_CONFIG: boolish,
     /** Optional Slack-compatible webhook for analytics alerts (P6.4). Payloads carry rule names and numbers only. */
     ALERT_WEBHOOK_URL: z.string().url().optional(),
   })
@@ -39,6 +55,9 @@ const EnvSchema = z
     ...e,
     SESSION_SECRET: e.SESSION_SECRET ?? DEV_SESSION_SECRET,
     sessionSecretIsDefault: e.SESSION_SECRET === undefined,
+    webOrigins: e.WEB_ORIGIN.split(',').map((o) => new URL(o.trim()).origin),
+    voiceWsTokenOnly: e.VOICE_WS_TOKEN_ONLY ?? false,
+    applyDemoConfig: e.APPLY_DEMO_CONFIG ?? false,
     adminHandles: new Set(
       e.ADMIN_USERS.split(',')
         .map((h) => h.trim().toLowerCase())

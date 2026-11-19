@@ -1,8 +1,10 @@
 /**
  * Records one spoken turn (decisions.md ADR-005): MediaRecorder + a simple energy-based voice-activity detector.
- * The turn ends after `silenceMs` of quiet following speech (1.2 s), on `stop()` (the "Done" button), or at `maxMs`.
+ * The turn ends after `silenceMs` of quiet following speech (1.8 s; quiet is measured against the learner's own level), on `stop()` (the "Done" button), or at `maxMs`.
  * Audio stays in memory and is sent once to the server; nothing is saved on the device.
  */
+import { EndOfTurnDetector } from './end-of-turn';
+
 const MIME_CANDIDATES = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
 
 export function pickMime(): string {
@@ -66,35 +68,25 @@ export class TurnRecorder {
     });
     rec.start(250);
 
-    // Adaptive threshold: calibrate the room's noise floor for the first 300 ms.
+    // End of turn: noise-floor calibration, then silence relative to the learner's own speech level (end-of-turn.ts).
     const buf = new Float32Array(this.analyser.fftSize);
     const started = Date.now();
-    let floor = 0.005;
-    let floorSamples = 0;
-    let speechMs = 0;
-    let silenceMs = 0;
     const STEP = 50;
+    const detector = new EndOfTurnDetector({ silenceMs: this.opts.silenceMs, maxMs: this.opts.maxMs, stepMs: STEP, quiet: this.quiet });
     this.timer = setInterval(() => {
       this.analyser.getFloatTimeDomainData(buf);
       let sum = 0;
       for (const x of buf) sum += x * x;
       const rms = Math.sqrt(sum / buf.length);
       this.opts.onLevel?.(rms);
-      const elapsed = Date.now() - started;
-      if (elapsed < 300) {
-        floor = (floor * floorSamples + rms) / ++floorSamples;
-        return;
+      const signal = detector.push(rms, Date.now() - started);
+      if (signal === 'speech-start') {
+        hadSpeech = true;
+        this.opts.onSpeechStart?.();
+      } else if (signal === 'end') {
+        hadSpeech = detector.hadSpeech;
+        this.stop();
       }
-      const threshold = this.quiet ? Math.max(0.006, floor * 1.6) : Math.max(0.015, floor * 2.5);
-      if (rms > threshold) {
-        speechMs += STEP;
-        silenceMs = 0;
-        if (!hadSpeech && speechMs >= 150) {
-          hadSpeech = true;
-          this.opts.onSpeechStart?.();
-        }
-      } else if (hadSpeech) silenceMs += STEP;
-      if ((hadSpeech && silenceMs >= this.opts.silenceMs) || elapsed >= this.opts.maxMs) this.stop();
     }, STEP);
     return result;
   }

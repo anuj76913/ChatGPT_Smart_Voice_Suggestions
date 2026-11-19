@@ -4,7 +4,7 @@ import { AnalyticsDashboard } from './components/AnalyticsDashboard';
 import { ChatApp } from './components/ChatApp';
 import { api, onUnauthorized } from './lib/api';
 import { events } from './lib/events';
-import { ADMIN_ROUTE, autoAdminActive, deviceHandle, setAutoAdmin, ADMIN_HANDLE } from './lib/session-identity';
+import { ADMIN_ROUTE, adminHandle, autoAdminActive, deviceHandle, setAutoAdmin } from './lib/session-identity';
 
 type Auth = { state: 'loading' } | { state: 'in'; me: Me } | { state: 'offline' };
 
@@ -34,13 +34,14 @@ export function App() {
     const wantAdmin = hash === ADMIN_ROUTE;
     const signIn = async (handle: string): Promise<Me> => {
       const me = await api.login(handle);
-      setAutoAdmin(handle === ADMIN_HANDLE);
+      setAutoAdmin(handle === adminHandle());
       return me;
     };
     const resolve = async (): Promise<Me> => {
       const current = authRef.current.state === 'in' ? authRef.current.me : await api.me().catch((err: { status?: number }) => (err?.status === 401 ? null : Promise.reject(err)));
-      if (!current) return signIn(wantAdmin ? ADMIN_HANDLE : deviceHandle());
-      if (wantAdmin && !current.is_admin) return signIn(ADMIN_HANDLE);
+      const admin = wantAdmin ? adminHandle() : null; // null on a public build without the private admin link
+      if (!current) return signIn(admin ?? deviceHandle());
+      if (admin && !current.is_admin) return signIn(admin);
       // Leaving the dashboard after an automatic admin sign-in: back to this device's learner.
       if (!wantAdmin && current.is_admin && autoAdminActive()) return signIn(deviceHandle());
       return current;
@@ -60,7 +61,7 @@ export function App() {
       if (authRef.current.state !== 'in') return;
       setAutoAdmin(false);
       void api
-        .login(location.hash === ADMIN_ROUTE ? ADMIN_HANDLE : deviceHandle())
+        .login((location.hash === ADMIN_ROUTE ? adminHandle() : null) ?? deviceHandle())
         .then((me) => setAuth({ state: 'in', me }))
         .catch(() => setAuth({ state: 'offline' }));
     };

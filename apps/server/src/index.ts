@@ -1,3 +1,4 @@
+import { DEMO_CONFIG } from '@svs/shared';
 import { buildApp } from './app';
 import { ConfigService } from './config/service';
 import { createDb } from './db';
@@ -37,6 +38,12 @@ const speech = env.GROQ_API_KEY
 const app = buildApp({ env, db, config, gateway, speech });
 sink = { warn: (o, m) => app.log.warn(o, m), info: (o, m) => app.log.info(o, m) };
 await config.start();
+// Deployed demo (APPLY_DEMO_CONFIG=true): turn the demo config on once, on a fresh database. Never overwrites
+// overrides that already exist, so later changes made with ops:config or the admin API survive restarts.
+if (env.applyDemoConfig && db && Object.keys(config.getOverrides()).length === 0) {
+  const r = await config.setOverrides(DEMO_CONFIG, 'deploy', 'APPLY_DEMO_CONFIG: team demo config on first start');
+  log.info({ version: r.version }, 'applied demo config');
+}
 // P6.4: evaluate alert rules on a schedule (analytics.alerts.intervalMs; 0 disables it).
 app.alerts?.start();
 // P7.3: purge voice transcripts past the retention window (privacy.voiceTranscriptRetentionDays).
