@@ -5,8 +5,8 @@
   "buildCommand": "npm run build -w @svs/web",
   "outputDirectory": "apps/web/dist",
   "rewrites": [
-    { "source": "/v1/:path*", "destination": "https://YOUR-RAILWAY-API.up.railway.app/v1/:path*" },
-    { "source": "/healthz", "destination": "https://YOUR-RAILWAY-API.up.railway.app/healthz" }
+    { "source": "/v1/:path*", "destination": "https://svsserver-production.up.railway.app/v1/:path*" },
+    { "source": "/healthz", "destination": "https://svsserver-production.up.railway.app/healthz" }
   ],
   "headers": [
     {
